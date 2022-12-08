@@ -1,11 +1,11 @@
-package am.itspace.car_rental_web.service.impl;
+package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.exception.DuplicateEmailException;
 import am.itspace.car_rental_common.repository.UserRepository;
-import am.itspace.car_rental_web.service.EmailService;
-import am.itspace.car_rental_web.service.UserService;
+import am.itspace.car_rental_common.service.EmailService;
+import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -37,7 +37,8 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             saveUsersImage(user, (file));
             userRepository.save(user);
-            mailService.sendEmail(user);
+            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
+                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -52,7 +53,8 @@ public class UserServiceImpl implements UserService {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             saveUsersImage(user, file);
             userRepository.saveAndFlush(user);
-            mailService.sendEmail(user);
+            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
+                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -67,7 +69,8 @@ public class UserServiceImpl implements UserService {
             user.setVerifyToken(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
-            mailService.sendEmail(user);
+            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
+                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
             throw new RuntimeException(e.getMessage());
         }

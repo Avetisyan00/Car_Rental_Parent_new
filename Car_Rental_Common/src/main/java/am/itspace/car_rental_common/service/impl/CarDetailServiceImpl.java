@@ -1,8 +1,10 @@
-package am.itspace.car_rental_web.service.impl;
+package am.itspace.car_rental_common.service.impl;
 
-import am.itspace.car_rental_common.entity.*;
-import am.itspace.car_rental_common.repository.*;
-import am.itspace.car_rental_web.service.CarDetailService;
+import am.itspace.car_rental_common.entity.Car;
+import am.itspace.car_rental_common.entity.Image;
+import am.itspace.car_rental_common.repository.CarDetailRepository;
+import am.itspace.car_rental_common.repository.CarRepository;
+import am.itspace.car_rental_common.service.CarDetailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
@@ -27,7 +29,7 @@ public class CarDetailServiceImpl implements CarDetailService {
 
     @Value("${car.rental.images.folder}")
     private String folderPath;
-
+    @Override
     public void save(int carId, MultipartFile[] files) {
         int index = 0;
         Optional<Car> byId = carRepository.findById(carId);
@@ -59,7 +61,7 @@ public class CarDetailServiceImpl implements CarDetailService {
         }
 
     }
-
+    @Override
     public byte[] getCarService(String fileName) {
         try {
             InputStream inputStream = new FileInputStream(folderPath + File.separator + fileName);
@@ -69,12 +71,12 @@ public class CarDetailServiceImpl implements CarDetailService {
             throw new RuntimeException(e.getMessage());
         }
     }
-
+    @Override
     public List<Image> findAllByCar(int id) {
         log.info("Find all images by carId {}", id + " from the database");
         return carDetailRepository.findAllByCar_Id(id);
     }
-
+    @Override
     public void delete(int id) {
         carDetailRepository.deleteById(id);
         log.info("The image has been deleted the id {}", id);

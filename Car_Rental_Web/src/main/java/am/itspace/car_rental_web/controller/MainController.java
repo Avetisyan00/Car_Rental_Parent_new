@@ -1,7 +1,7 @@
 package am.itspace.car_rental_web.controller;
 
 import am.itspace.car_rental_common.entity.Car;
-import am.itspace.car_rental_web.service.CarService;
+import am.itspace.car_rental_common.service.CarService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package am.itspace.car_rental_web.service;
+package am.itspace.car_rental_common.service;
 
 import am.itspace.car_rental_common.entity.Image;
 import org.springframework.web.multipart.MultipartFile;

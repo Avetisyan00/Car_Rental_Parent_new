@@ -1,7 +1,7 @@
-package am.itspace.car_rental_web.service;
+package am.itspace.car_rental_common.service;
 
-import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.entity.Role;
+import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.exception.DuplicateEmailException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;

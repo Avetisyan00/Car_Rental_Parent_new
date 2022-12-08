@@ -2,8 +2,8 @@ package am.itspace.car_rental_web.controller;
 
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Order;
-import am.itspace.car_rental_web.service.CarService;
-import am.itspace.car_rental_web.service.OrderService;
+import am.itspace.car_rental_common.service.CarService;
+import am.itspace.car_rental_common.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

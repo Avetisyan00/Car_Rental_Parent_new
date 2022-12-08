@@ -3,7 +3,7 @@ package am.itspace.car_rental_web.controller;
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Category;
 import am.itspace.car_rental_web.security.CurrentUser;
-import am.itspace.car_rental_web.service.CarService;
+import am.itspace.car_rental_common.service.CarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -28,7 +28,7 @@ public class CarController {
     private final CarService carService;
 
     /**
-     * This method show cars
+     * This method shows cars
      */
     @GetMapping("/cars")
     public String cars(@RequestParam("page") Optional<Integer> page,

@@ -1,11 +1,11 @@
-package am.itspace.car_rental_web.service.impl;
+package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Order;
 import am.itspace.car_rental_common.repository.CarRepository;
 import am.itspace.car_rental_common.repository.OrderRepository;
 import am.itspace.car_rental_common.repository.UserRepository;
-import am.itspace.car_rental_web.service.OrderService;
+import am.itspace.car_rental_common.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

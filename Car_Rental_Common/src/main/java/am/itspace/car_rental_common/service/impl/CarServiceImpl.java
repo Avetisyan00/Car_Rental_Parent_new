@@ -1,8 +1,13 @@
-package am.itspace.car_rental_web.service.impl;
+package am.itspace.car_rental_common.service.impl;
 
-import am.itspace.car_rental_common.entity.*;
-import am.itspace.car_rental_common.repository.*;
-import am.itspace.car_rental_web.service.CarService;
+import am.itspace.car_rental_common.entity.Car;
+import am.itspace.car_rental_common.entity.Category;
+import am.itspace.car_rental_common.entity.Image;
+import am.itspace.car_rental_common.entity.User;
+import am.itspace.car_rental_common.repository.CarDetailRepository;
+import am.itspace.car_rental_common.repository.CarRepository;
+import am.itspace.car_rental_common.repository.UserRepository;
+import am.itspace.car_rental_common.service.CarService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;

@@ -12,13 +12,22 @@
 	<name>Car_Rental_Rest</name>
 	<description>Car_Rental_Rest</description>
 	<properties>
-		<java.version>17</java.version>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>am.itspace</groupId>
+			<artifactId>Car_Rental_Common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+        <dependency>
+            <groupId>jakarta.mail</groupId>
+            <artifactId>jakarta.mail-api</artifactId>
+            <version>2.1.0</version>
         </dependency>
     </dependencies>
 

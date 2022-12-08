@@ -3,9 +3,9 @@ package am.itspace.car_rental_web.controller;
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Image;
 import am.itspace.car_rental_common.entity.Order;
-import am.itspace.car_rental_web.service.CarDetailService;
-import am.itspace.car_rental_web.service.CarService;
-import am.itspace.car_rental_web.service.OrderService;
+import am.itspace.car_rental_common.service.CarDetailService;
+import am.itspace.car_rental_common.service.CarService;
+import am.itspace.car_rental_common.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,7 +64,7 @@ public class CarDetailController {
         byId.ifPresent(car -> modelMap.addAttribute("car", car));
         List<Image> all = carDetailService.findAllByCar(id);
         modelMap.addAttribute("images", all);
-        LocalDate now = LocalDate.now();
+        LocalDateTime now = LocalDateTime.now();
         List<Order> allByCarId = orderService.findAllByCar_id(id);
         for (Order order : allByCarId) {
             if ((now.isAfter(order.getOrderStart()) || now.equals(order.getOrderStart())) && (now.isBefore(order.getOrderEnd()))) {

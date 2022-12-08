@@ -1,6 +1,6 @@
 package am.itspace.car_rental_web.controller;
 
-import am.itspace.car_rental_web.service.UserService;
+import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
