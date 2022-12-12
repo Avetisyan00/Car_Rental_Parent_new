@@ -28,6 +28,8 @@ public class Order {
     @ManyToOne
     private User dealer;
     @ManyToOne
+    private User client;
+    @ManyToOne
     private Car car;
     private double amount;
 }

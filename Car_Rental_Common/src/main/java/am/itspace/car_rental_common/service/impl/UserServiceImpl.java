@@ -4,7 +4,6 @@ import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.exception.DuplicateEmailException;
 import am.itspace.car_rental_common.repository.UserRepository;
-import am.itspace.car_rental_common.service.EmailService;
 import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +22,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final EmailService mailService;
+    private final MailService mailService;
     private final BCryptPasswordEncoder passwordEncoder;
     @Value("${car.rental.user.images.folder}")
     private String folderPath;
