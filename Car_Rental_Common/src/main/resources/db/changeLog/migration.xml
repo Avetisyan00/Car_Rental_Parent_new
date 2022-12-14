@@ -163,6 +163,30 @@
                     foreign key (car_id) references car (id)
                         on delete cascade;
         </sql>
+    </changeSet> <changeSet id="create_user_image" author="eAvetisyan">
+        <createTable tableName="user_image">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="pic_url" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT"/>
+        </createTable>
+        <sql>
+            alter table user_image
+                add constraint user_id
+                    foreign key (user_id) references user (id)
+                        on delete cascade;
+        </sql>
+    </changeSet>
+    <changeSet id="change_order_start_and_end_type_to_date" author="eAvetisyan">
+        <modifyDataType tableName="car_order" columnName="order_start" newDataType="Date"/>
+        <modifyDataType tableName="car_order" columnName="order_end" newDataType="Date"/>
+    </changeSet>
+    <changeSet id="change_per_hour_to_per_day" author="eAvetisyan">
+        <renameColumn columnDataType="double" tableName="car" oldColumnName="price_per_hour" newColumnName="price_per_day"/>
+        <renameColumn columnDataType="double" tableName="user" oldColumnName="price" newColumnName="price_per_day"/>
     </changeSet>
 
 </databaseChangeLog>

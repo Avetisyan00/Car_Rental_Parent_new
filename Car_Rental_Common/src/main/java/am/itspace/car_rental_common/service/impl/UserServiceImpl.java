@@ -2,7 +2,9 @@ package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
+import am.itspace.car_rental_common.entity.UserImage;
 import am.itspace.car_rental_common.exception.DuplicateEmailException;
+import am.itspace.car_rental_common.repository.ImageRepository;
 import am.itspace.car_rental_common.repository.UserRepository;
 import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,18 +26,20 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final MailService mailService;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final ImageRepository imageRepository;
     @Value("${car.rental.user.images.folder}")
     private String folderPath;
 
-    public void saveUserAsClient(@ModelAttribute User user, MultipartFile file) {
+    public void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files) {
+
         try {
             checkEmail(user);
             user.setRole(Role.CLIENT);
             user.setEnabled(false);
             user.setVerifyToken(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            saveUsersImage(user, (file));
             userRepository.save(user);
+            saveUsersImage(user, (files));
             mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
                     "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
@@ -43,15 +47,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void saveUserAsDriver(@ModelAttribute User user, MultipartFile file) {
+
+    public void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files) {
         try {
             checkEmail(user);
             user.setRole(Role.DRIVER);
             user.setEnabled(false);
             user.setVerifyToken(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            saveUsersImage(user, file);
-            userRepository.saveAndFlush(user);
+            userRepository.save(user);
+            saveUsersImage(user, files);
             mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
                     "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
@@ -59,15 +64,15 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void saveUserAsDealer(@ModelAttribute User user, MultipartFile file) {
+    public void saveUserAsDealer(@ModelAttribute User user, MultipartFile[] files) {
         try {
             checkEmail(user);
             user.setRole(Role.DEALER);
-            saveUsersImage(user, file);
             user.setEnabled(false);
             user.setVerifyToken(UUID.randomUUID().toString());
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepository.save(user);
+            saveUsersImage(user, files);
             mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
                     "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
         } catch (DuplicateEmailException e) {
@@ -81,15 +86,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void saveUsersImage(User user, MultipartFile file) {
+    public void saveUsersImage(User user, MultipartFile[] files) {
         try {
-            if (!file.isEmpty() && file.getSize() > 0) {
-                String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-                File newFile = new File(folderPath + File.separator + fileName);
-                file.transferTo(newFile);
-                user.setPicUrl(fileName);
-            } else {
-                user.setPicUrl("C:\\Users\\Edgar\\IdeaProjects\\DiplomaProject\\Car Rental\\src\\main\\resources\\static\\supercars\\assets\\images\\defaultPic.jpg");
+            for (MultipartFile file : files) {
+                if (!file.isEmpty() && file.getSize() > 0) {
+                    String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                    File newFile = new File(folderPath + File.separator + fileName);
+                    file.transferTo(newFile);
+                    user.setPicUrl(fileName);
+                    UserImage userImage = UserImage.builder()
+                            .user(user)
+                            .picUrl(fileName)
+                            .build();
+                    imageRepository.save(userImage);
+                } else {
+                    user.setPicUrl("C:\\Users\\Edgar\\Desktop\\user_images");
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e.getMessage());

@@ -29,6 +29,7 @@ public class CarDetailServiceImpl implements CarDetailService {
 
     @Value("${car.rental.images.folder}")
     private String folderPath;
+
     @Override
     public void save(int carId, MultipartFile[] files) {
         int index = 0;
@@ -61,6 +62,7 @@ public class CarDetailServiceImpl implements CarDetailService {
         }
 
     }
+
     @Override
     public byte[] getCarService(String fileName) {
         try {
@@ -71,11 +73,13 @@ public class CarDetailServiceImpl implements CarDetailService {
             throw new RuntimeException(e.getMessage());
         }
     }
+
     @Override
     public List<Image> findAllByCar(int id) {
         log.info("Find all images by carId {}", id + " from the database");
         return carDetailRepository.findAllByCar_Id(id);
     }
+
     @Override
     public void delete(int id) {
         carDetailRepository.deleteById(id);

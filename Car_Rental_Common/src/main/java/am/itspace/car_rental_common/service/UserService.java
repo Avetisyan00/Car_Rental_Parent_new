@@ -10,15 +10,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void saveUserAsClient(@ModelAttribute User user, MultipartFile file);
+    void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files);
 
-    void saveUserAsDriver(@ModelAttribute User user, MultipartFile file);
+    void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files);
 
-    void saveUserAsDealer(@ModelAttribute User user, MultipartFile file);
+    void saveUserAsDealer(@ModelAttribute User user, MultipartFile[] files);
 
     void checkEmail(User user) throws DuplicateEmailException;
 
-    void saveUsersImage(User user, MultipartFile file);
+    void saveUsersImage(User user, MultipartFile[] file);
 
     void verifyUser(String email, String token);
 

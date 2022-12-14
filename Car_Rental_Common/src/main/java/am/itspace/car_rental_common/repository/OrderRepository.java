@@ -9,4 +9,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     List<Order> findAllByCar_Id(int carId);
+    List<Order> findAllByClientId(int clientId);
+    List<Order> findAllByDealerId(int dealerId);
+    List<Order> findAllByDriverId(int driverId);
 }

@@ -24,8 +24,8 @@ public class ClientController {
     }
 
     @PostMapping("/registration/client")
-    public String userRegistration(@ModelAttribute User user, @RequestParam("userImage") MultipartFile file) {
-        userService.saveUserAsClient(user, file);
+    public String userRegistration(@ModelAttribute User user, @RequestParam("userImage") MultipartFile[] files) {
+        userService.saveUserAsClient(user, files);
         return "redirect:/";
     }
 }

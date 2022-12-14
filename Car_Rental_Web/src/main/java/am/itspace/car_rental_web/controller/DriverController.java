@@ -23,8 +23,8 @@ public class DriverController {
     }
 
     @PostMapping("/registration/driver")
-    public String driverRegistrationPage(@ModelAttribute User user, @RequestParam("userImage") MultipartFile file) {
-        userService.saveUserAsDriver(user, file);
+    public String driverRegistrationPage(@ModelAttribute User user, @RequestParam("userImage") MultipartFile[] files) {
+        userService.saveUserAsDriver(user, files);
         return "redirect:/driver";
     }
 }

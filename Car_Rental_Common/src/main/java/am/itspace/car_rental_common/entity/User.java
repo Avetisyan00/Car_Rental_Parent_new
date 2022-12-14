@@ -35,7 +35,7 @@ public class User {
     private Role role;
     @Enumerated(value = EnumType.STRING)
     private DriverLicense driverLicense;
-    private double price;
+    private double pricePerDay;
     private int rating;
     private String picUrl;
     @Enumerated(value = EnumType.STRING)

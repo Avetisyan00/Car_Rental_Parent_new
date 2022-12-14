@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en-us" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="en-us" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>SuperCars - About Us</title>
     <meta charset="utf-8">
@@ -162,12 +162,7 @@
             </div>
         </div>
     </section>
-    <form action="/order/add" method="post">
-        <input type="date" name="orderStart">
-        <input type="date" name="orderEnd">
-        <input type="hidden" name="carId" th:value="${car.id}">
-        <input type="submit" value="Book Now">
-    </form>
+
     <!-- About Us End -->
 
     <!-- Our Vision & Mission Start -->
