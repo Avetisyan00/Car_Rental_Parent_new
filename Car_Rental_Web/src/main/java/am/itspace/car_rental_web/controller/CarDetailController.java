@@ -66,11 +66,11 @@ public class CarDetailController {
         modelMap.addAttribute("images", all);
         LocalDateTime now = LocalDateTime.now();
         List<Order> allByCarId = orderService.findAllByCar_id(id);
-        for (Order order : allByCarId) {
-            if ((now.isAfter(order.getOrderStart()) || now.equals(order.getOrderStart())) && (now.isBefore(order.getOrderEnd()))) {
-                modelMap.addAttribute("error", "The car is busy");
-            }
-        }
+//        for (Order order : allByCarId) {
+//            if ((now.isAfter(order.getOrderStart()) || now.equals(order.getOrderStart())) && (now.isBefore(order.getOrderEnd()))) {
+//                modelMap.addAttribute("error", "The car is busy");
+//            }
+//        }
         return "car-detail";
     }
 

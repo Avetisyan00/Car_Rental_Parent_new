@@ -23,8 +23,8 @@ public class DealerController {
     }
 
     @PostMapping("/registration/dealer")
-    public String dealerRegistration(@ModelAttribute User user, @RequestParam("userImage") MultipartFile file) {
-        userService.saveUserAsDealer(user, file);
+    public String dealerRegistration(@ModelAttribute User user, @RequestParam("userImage") MultipartFile[] files) {
+        userService.saveUserAsDealer(user, files);
         return "redirect:/";
     }
 }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/order/add" method="post">
+  <label>
+    <input type="date" name="orderStart">
+    <input type=date name="orderEnd">
+  </label>
+  <input type="hidden" name="car" th:value="${car.id}">
+  <input type="hidden" name="dealer" th:value="${car.dealer.id}">
+  <input type="hidden" name="client" th:value="${currentUser.id}">
+  <select name="driver" style="width: 100px">
+    <option th:each="driver : ${drivers}" th:value="${driver.id}" th:text="${driver.name}"></option>
+  </select>
+  <input type="submit" value="Book Now">
+</form>
+
+<script>
+
+</script>
+
+</body>
+</html>

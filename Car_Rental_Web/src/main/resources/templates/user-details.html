@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+name:
+<span th:text="${user.name}"></span><br>
+surname:
+<span th:text="${user.surname}"></span><br>
+Age:
+<span th:text="${user.age}"></span><br>
+driver license:
+<span th:text="${user.driverLicense}"></span><br>
+rating:
+<span th:text="${user.rating}"></span><br>
+email:
+<span th:text="${user.email}"></span>
+<ul th:each="image: ${images}">
+    <li th:src="@{/user/detail/getImage(fileName = ${image.picUrl})}"></li>
+</ul>
+</body>
+</html>

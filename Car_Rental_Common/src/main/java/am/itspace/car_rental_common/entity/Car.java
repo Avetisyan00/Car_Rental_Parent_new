@@ -33,7 +33,7 @@ public class Car {
 
     private int productionYear;
     private String picUrl;
-    private double pricePerHour;
+    private double pricePerDay;
     @ManyToOne
     private User dealer;
 }

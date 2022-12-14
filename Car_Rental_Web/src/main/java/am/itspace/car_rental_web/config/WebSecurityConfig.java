@@ -35,6 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/client/").hasAuthority(Role.CLIENT.name())
                 .antMatchers("/dealer/").hasAuthority(Role.DEALER.name())
+                .antMatchers("/cars/add").hasAuthority(Role.DEALER.name())
                 .antMatchers("/driver/").hasAuthority(Role.DRIVER.name())
                 .antMatchers("/admin/**").hasAuthority(Role.ADMIN.name())
                 .anyRequest()

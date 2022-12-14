@@ -14,7 +14,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ComponentScan(basePackages = {"am.itspace.car_rental_web.*", "am.itspace.car_rental_common.*"})
 @EntityScan(basePackages = "am.itspace.car_rental_common.*")
 @EnableJpaRepositories(basePackages = "am.itspace.car_rental_common.*")
-
 public class CarRentalWebApplication {
 
     public static void main(String[] args) {
