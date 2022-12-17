@@ -18,7 +18,7 @@ public interface OrderService {
 
     List<Order> findAllByDriverId(int driverId);
 
-    List<Order> findAllByCar_id(int id);
+    List<Order> findAllByCarId(int id);
 
     List<Order> findAll();
 

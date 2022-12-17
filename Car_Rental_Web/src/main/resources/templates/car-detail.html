@@ -168,9 +168,12 @@
                                                          style="height: 480px;width: 1200px ">
                                                 </div>
                                             </a>
-                                            <a th:if="${currentUser != null&& car.dealer != null && currentUser.id == car.dealer.id &&image.car.id == car.id}"
+                                            <a th:if="${currentUser != null && car.dealer != null && currentUser.id == car.dealer.id &&image.car.id == car.id}"
                                                th:href="@{/cars-detail/remove(id = ${image.id})}" style="color: red">
                                                 Delete Image </a>
+                                            <a th:if="${currentUser != null && car.dealer != null && currentUser.id == car.dealer.id &&image.car.id == car.id}"
+                                               th:href="@{/cars-detail/update(id = ${image.id})}" style="color: red">
+                                                Update Image </a>
                                         </div>
                                         <!--                                        <div class="swiper-slide">-->
                                         <!--                                            <a href="/supercars/assets/images/interior-exterior-img3.jpg" data-fancybox="image">-->

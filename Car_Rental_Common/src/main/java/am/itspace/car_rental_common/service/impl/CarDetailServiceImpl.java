@@ -2,6 +2,7 @@ package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Image;
+import am.itspace.car_rental_common.exception.EntityNotFoundException;
 import am.itspace.car_rental_common.repository.CarDetailRepository;
 import am.itspace.car_rental_common.repository.CarRepository;
 import am.itspace.car_rental_common.service.CarDetailService;
@@ -9,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,7 +32,6 @@ public class CarDetailServiceImpl implements CarDetailService {
     @Value("${car.rental.images.folder}")
     private String folderPath;
 
-    @Override
     public void save(int carId, MultipartFile[] files) {
         int index = 0;
         Optional<Car> byId = carRepository.findById(carId);
@@ -47,7 +48,7 @@ public class CarDetailServiceImpl implements CarDetailService {
                             file.transferTo(newFile);
                             newImage.setPicUrl(fileName);
                             carDetailRepository.save(newImage);
-                            log.info("The image has been saved and carId{}", carId);
+                            log.info("The image has already been saved and carId{}", carId);
                             if (index == 5) {
                                 break;
                             }
@@ -63,7 +64,6 @@ public class CarDetailServiceImpl implements CarDetailService {
 
     }
 
-    @Override
     public byte[] getCarService(String fileName) {
         try {
             InputStream inputStream = new FileInputStream(folderPath + File.separator + fileName);
@@ -74,15 +74,45 @@ public class CarDetailServiceImpl implements CarDetailService {
         }
     }
 
-    @Override
+    @Cacheable("carsImages")
     public List<Image> findAllByCar(int id) {
-        log.info("Find all images by carId {}", id + " from the database");
+        log.info("Get all images by carId {}", id + " from database");
         return carDetailRepository.findAllByCar_Id(id);
     }
 
-    @Override
-    public void delete(int id) {
+    public void delete(int id) throws EntityNotFoundException {
+        Optional<Image> byId = carDetailRepository.findById(id);
+        if (byId.isEmpty()) {
+            throw new EntityNotFoundException("Car with" + id + "does not exists");
+        }
         carDetailRepository.deleteById(id);
-        log.info("The image has been deleted the id {}", id);
+        log.info("The image has already been deleted the id {}", id);
+    }
+
+    @Override
+    public Optional<Image> findById(int id) {
+        return carDetailRepository.findById(id);
+    }
+
+    @Override
+    public void updateCarImage(MultipartFile file, Image image) {
+        Optional<Car> byId = carRepository.findById(image.getCar().getId());
+        if (byId.isPresent()) {
+            if (!file.isEmpty() && file.getSize() > 0) {
+                if (file.getContentType() != null && file.getContentType().contains("image")) {
+                    try {
+                        image.setCar(byId.get());
+                        String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+                        File newFile = new File(folderPath + File.separator + fileName);
+                        file.transferTo(newFile);
+                        image.setPicUrl(fileName);
+                    } catch (IOException e) {
+                        log.error(e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+            carDetailRepository.save(image);
+        }
     }
 }

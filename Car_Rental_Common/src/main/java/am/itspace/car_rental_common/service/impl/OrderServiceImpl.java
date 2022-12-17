@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByDriverId(driverId);
     }
 
-    public List<Order> findAllByCar_id(int id) {
+    public List<Order> findAllByCarId(int id) {
         return orderRepository.findAllByCar_Id(id);
     }
 
