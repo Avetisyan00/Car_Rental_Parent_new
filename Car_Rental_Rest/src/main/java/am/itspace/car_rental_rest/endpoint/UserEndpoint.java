@@ -5,7 +5,7 @@ import am.itspace.car_rental_common.service.UserInfoService;
 import am.itspace.car_rental_common.service.UserService;
 import am.itspace.car_rental_rest.dto.RegistrationDto;
 import am.itspace.car_rental_rest.dto.UserDetailsDto;
-import am.itspace.car_rental_rest.mappper.UserMapper;
+import am.itspace.car_rental_rest.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

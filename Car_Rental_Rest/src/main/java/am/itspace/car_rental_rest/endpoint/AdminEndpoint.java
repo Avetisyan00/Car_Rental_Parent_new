@@ -4,7 +4,7 @@ import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.service.UserService;
 import am.itspace.car_rental_rest.dto.UpdateUserDto;
-import am.itspace.car_rental_rest.mappper.UserMapper;
+import am.itspace.car_rental_rest.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
