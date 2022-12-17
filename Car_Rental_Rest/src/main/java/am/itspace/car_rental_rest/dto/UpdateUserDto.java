@@ -15,11 +15,11 @@ public class UpdateUserDto {
     private String surname;
     private String email;
     private String password;
-    private int age;
+    private Integer age;
     private String phoneNumber;
     private String role;
     private String driverLicense;
-    private double pricePerDay;
-    private int rating;
-    private boolean isEnabled;
+    private Double pricePerDay;
+    private Integer rating;
+    private Boolean isEnabled;
 }

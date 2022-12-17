@@ -26,6 +26,13 @@ public class AuthEndpoint {
     private final JwtTokenUtil jwtTokenUtil;
     private final BCryptPasswordEncoder passwordEncoder;
 
+    /**
+     * This method lets user authenticate in system.
+     * method gets user from db by email, and if user exists,
+     * we check user's password. If all these credentials are valid,
+     * we generate his authentication token for future requests
+     */
+
     @PostMapping("/user/auth")
     public ResponseEntity<?> auth(@RequestBody AuthenticationRequest authenticationRequest) {
 

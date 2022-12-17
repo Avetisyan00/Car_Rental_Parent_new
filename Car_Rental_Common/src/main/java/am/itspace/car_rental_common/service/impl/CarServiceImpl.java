@@ -48,7 +48,7 @@ public class CarServiceImpl implements CarService {
         return carRepository.findAllByCategory(category);
     }
 
-    public byte[] getCarService(String fileName) {
+    public byte[] getCarImage(String fileName) {
         try {
             InputStream inputStream = new FileInputStream(folderPath + File.separator + fileName);
             return IOUtils.toByteArray(inputStream);

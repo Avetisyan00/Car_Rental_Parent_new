@@ -5,7 +5,7 @@ package am.itspace.car_rental_common.exception;
  * It's possible, that client will set start date of order,
  * which will be after end date.
  */
-public class InvalidOrderDateException extends Exception {
+public class InvalidOrderDateException extends RuntimeException {
     public InvalidOrderDateException() {
     }
 

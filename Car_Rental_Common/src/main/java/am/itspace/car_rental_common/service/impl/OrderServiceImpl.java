@@ -2,6 +2,7 @@ package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Order;
+import am.itspace.car_rental_common.entity.Status;
 import am.itspace.car_rental_common.entity.User;
 import am.itspace.car_rental_common.exception.InvalidOrderDateException;
 import am.itspace.car_rental_common.repository.OrderRepository;
@@ -38,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
             throw new InvalidOrderDateException("order start is: " + orderStart + ", but order end is: " + orderEnd);
         } else {
             orderRepository.save(order);
+            driver.setStatus(Status.BUSY);
             log.info("Order has been saved successfully");
         }
     }

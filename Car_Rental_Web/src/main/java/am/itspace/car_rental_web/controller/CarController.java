@@ -91,7 +91,7 @@ public class CarController {
 
     @GetMapping(value = "/cars/getImage", produces = MediaType.IMAGE_JPEG_VALUE)
     public @ResponseBody byte[] getImage(@RequestParam("fileName") String fileName) {
-        return carService.getCarService(fileName);
+        return carService.getCarImage(fileName);
     }
 
     @GetMapping("/cars/delete")

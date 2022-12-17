@@ -2,7 +2,7 @@ package am.itspace.car_rental_common.exception;
 
 import org.springframework.http.HttpStatus;
 
-public class InvalidCredentialsException extends Exception{
+public class InvalidCredentialsException extends RuntimeException{
     public InvalidCredentialsException() {
     }
 

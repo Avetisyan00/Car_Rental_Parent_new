@@ -13,8 +13,6 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

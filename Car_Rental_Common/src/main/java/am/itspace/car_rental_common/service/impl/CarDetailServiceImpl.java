@@ -84,6 +84,5 @@ public class CarDetailServiceImpl implements CarDetailService {
     public void delete(int id) {
         carDetailRepository.deleteById(id);
         log.info("The image has been deleted the id {}", id);
-
     }
 }

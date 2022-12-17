@@ -18,20 +18,34 @@ public class AdminEndpoint {
     private final UserService userService;
     private final UserMapper userMapper;
 
+    /**
+     * get list of drivers
+     */
     @GetMapping("/list/drivers")
     public ResponseEntity<List<User>> listOfDrivers() {
         return ResponseEntity.ok(userService.findAllByRole(Role.DRIVER));
     }
 
+    /**
+     * get list of dealers
+     */
+
     @GetMapping("/list/dealers")
     public ResponseEntity<List<User>> listOfDealers() {
         return ResponseEntity.ok(userService.findAllByRole(Role.DEALER));
     }
+    /**
+     * get list of clients
+     */
 
     @GetMapping("/list/clients")
     public ResponseEntity<List<User>> listOfClients() {
         return ResponseEntity.ok(userService.findAllByRole(Role.CLIENT));
     }
+
+    /**
+     * delete user by id
+     */
 
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<?> deleteUserById(@PathVariable(name = "id") int id) {
@@ -43,6 +57,10 @@ public class AdminEndpoint {
             return ResponseEntity.notFound().build();
         }
     }
+
+    /**
+     * update user
+     */
 
     @PatchMapping("/user/change/{id}")
     public ResponseEntity<User> changeUserById(@PathVariable(name = "id") int id, @RequestBody UpdateUserDto updateUserDto) {
