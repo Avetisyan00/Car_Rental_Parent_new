@@ -14,8 +14,8 @@ public class RegistrationDto {
     private String surname;
     private String email;
     private String password;
-    private int age;
+    private Integer age;
     private String phoneNumber;
     private String driverLicense;
-    private double pricePerDay;
+    private Double pricePerDay;
 }

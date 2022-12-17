@@ -1,6 +1,7 @@
 package am.itspace.car_rental_common.service.impl;
 
 import am.itspace.car_rental_common.entity.Order;
+import am.itspace.car_rental_common.entity.Status;
 import am.itspace.car_rental_common.service.OrderSchedulerService;
 import am.itspace.car_rental_common.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class OrderSchedulerServiceImpl implements OrderSchedulerService {
         List<Order> allOrders = orderService.findAll();
         for (Order order : allOrders) {
             if (order.getOrderEnd().equals(LocalDate.now())) {
+                order.getDriver().setStatus(Status.FREE);
                 orderService.deleteOrderById(order.getId());
             }
         }

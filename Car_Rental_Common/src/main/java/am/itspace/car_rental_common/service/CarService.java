@@ -17,7 +17,7 @@ public interface CarService {
 
     void deleteById(int id);
 
-    byte[] getCarService(String fileName);
+    byte[] getCarImage(String fileName);
 
     void saveCar(Car car, MultipartFile file, int dealerId);
 

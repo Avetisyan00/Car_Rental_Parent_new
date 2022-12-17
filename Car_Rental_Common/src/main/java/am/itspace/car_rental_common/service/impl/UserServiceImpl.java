@@ -9,7 +9,6 @@ import am.itspace.car_rental_common.repository.UserRepository;
 import am.itspace.car_rental_common.service.MailService;
 import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -48,8 +45,6 @@ public class UserServiceImpl implements UserService {
                 user.setPassword(passwordEncoder.encode(user.getPassword()));
                 user.setTokenGivenDate(LocalDate.now());
                 userRepository.save(user);
-
-                String picUrl = user.getPicUrl();
                 saveUsersImage(user, (files));
                 mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " + "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
             }
@@ -118,7 +113,7 @@ public class UserServiceImpl implements UserService {
                     UserImage userImage = UserImage.builder().user(user).picUrl(fileName).build();
                     imageRepository.save(userImage);
                 } else {
-                    user.setPicUrl("C:\\Users\\Edgar\\Desktop\\user_images");
+                    user.setPicUrl(folderPath);
                 }
             }
         } catch (IOException e) {
