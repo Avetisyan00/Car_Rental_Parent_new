@@ -4,6 +4,7 @@ import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Order;
 import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
+import am.itspace.car_rental_common.exception.EntityNotFoundException;
 import am.itspace.car_rental_common.exception.InvalidOrderDateException;
 import am.itspace.car_rental_common.service.CarService;
 import am.itspace.car_rental_common.service.OrderService;
@@ -31,7 +32,7 @@ public class OrderController {
     private final UserService userService;
 
     @GetMapping("/add")
-    public String orderAddPage(ModelMap modelMap, @RequestParam("id") int id) {
+    public String orderAddPage(ModelMap modelMap, @RequestParam("id") int id) throws EntityNotFoundException {
         Optional<Car> car = carService.findById(id);
         car.ifPresent(value -> modelMap.addAttribute("car", value));
         modelMap.addAttribute("drivers", userService.findAllByRole(Role.DRIVER));
