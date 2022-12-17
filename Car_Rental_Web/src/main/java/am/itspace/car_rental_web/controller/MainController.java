@@ -2,8 +2,10 @@ package am.itspace.car_rental_web.controller;
 
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.service.CarService;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,8 +33,8 @@ public class MainController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication!=null){
-            new SecurityContextLogoutHandler().logout(request,response,authentication);
+        if (authentication != null) {
+            new SecurityContextLogoutHandler().logout(request, response, authentication);
             request.getSession().invalidate();
         }
         return "redirect:/";

@@ -188,5 +188,15 @@
         <renameColumn columnDataType="double" tableName="car" oldColumnName="price_per_hour" newColumnName="price_per_day"/>
         <renameColumn columnDataType="double" tableName="user" oldColumnName="price" newColumnName="price_per_day"/>
     </changeSet>
+    <changeSet id="addUsersActivationTokenDateForScheduler" author="eAvetisyan">
+        <addColumn tableName="user">
+            <column name="token_given_date" type="Date">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="changeConstraintOfTokenGivenDate" author="eAvetisyan">
+        <dropNotNullConstraint tableName="user" columnName="token_given_date" columnDataType="Date"/>
+    </changeSet>
 
 </databaseChangeLog>

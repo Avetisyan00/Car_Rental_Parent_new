@@ -1,8 +1,10 @@
 package am.itspace.car_rental_web.controller;
 
 import am.itspace.car_rental_common.entity.Car;
+import am.itspace.car_rental_common.entity.Order;
 import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_common.entity.User;
+import am.itspace.car_rental_common.exception.InvalidOrderDateException;
 import am.itspace.car_rental_common.service.CarService;
 import am.itspace.car_rental_common.service.OrderService;
 import am.itspace.car_rental_common.service.UserService;
@@ -13,10 +15,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -41,21 +40,19 @@ public class OrderController {
 
     @PostMapping("/add")
     public String orderAdd(
-            @RequestParam("car") Car car,
-            @RequestParam("driver") User driver,
-            @RequestParam("dealer") User dealer,
+            @ModelAttribute Order order,
             @RequestParam("client") int currentUser,
-            @RequestParam("orderStart")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate start,
-            @RequestParam("orderEnd")
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            LocalDate end
-    ) {
+            @RequestParam(required = false,name = "error") String error,
+            ModelMap modelMap
+    ) throws InvalidOrderDateException {
         log.info("/order/add has been called");
-        double amount = car.getPricePerDay() + driver.getPricePerDay();
-        orderService.save(car, driver, dealer, currentUser, start, end, amount);
-        return "redirect:/order?id=" + car.getId();
+        double amount = order.getCar().getPricePerDay() + order.getDriver().getPricePerDay();
+        if (error != null && error.equals("true")){
+            modelMap.addAttribute("error", "true");
+            return "orderAdd";
+        }
+        orderService.save(order.getCar(), order.getDriver(), order.getDealer(), currentUser, order.getOrderStart(), order.getOrderEnd(), amount);
+        return "redirect:/order?id=" + order.getCar().getId();
     }
 
     @GetMapping("/my")

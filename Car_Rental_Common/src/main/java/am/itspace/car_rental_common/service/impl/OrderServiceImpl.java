@@ -3,6 +3,7 @@ package am.itspace.car_rental_common.service.impl;
 import am.itspace.car_rental_common.entity.Car;
 import am.itspace.car_rental_common.entity.Order;
 import am.itspace.car_rental_common.entity.User;
+import am.itspace.car_rental_common.exception.InvalidOrderDateException;
 import am.itspace.car_rental_common.repository.OrderRepository;
 import am.itspace.car_rental_common.repository.UserRepository;
 import am.itspace.car_rental_common.service.OrderService;
@@ -22,21 +23,23 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
 
-    public void save(Car car, User driver, User dealer, int currentUser, LocalDate orderStart, LocalDate orderEnd, double amount) {
-        Order order = new Order();
-        order.setAmount(car.getPricePerDay());
-        order.setCar(car);
-        order.setOrderStart(orderStart);
-        order.setOrderEnd(orderEnd);
-        order.setDealer(car.getDealer());
-        order.setDriver(driver);
-        order.setDealer(dealer);
-        order.setAmount(amount);
+    public void save(Car car, User driver, User dealer, int currentUser, LocalDate orderStart, LocalDate orderEnd, double amount) throws InvalidOrderDateException {
+        Order order = Order.builder()
+                .amount(car.getPricePerDay() + driver.getPricePerDay())
+                .car(car)
+                .orderStart(orderStart)
+                .orderEnd(orderEnd)
+                .dealer(car.getDealer())
+                .driver(driver)
+                .build();
         Optional<User> byId = userRepository.findById(currentUser);
         byId.ifPresent(order::setClient);
-        orderRepository.save(order);
-        log.info("Order has been saved successfully");
-
+        if (orderStart.isAfter(orderEnd) || orderStart.equals(orderEnd)) {
+            throw new InvalidOrderDateException("order start is: " + orderStart + ", but order end is: " + orderEnd);
+        } else {
+            orderRepository.save(order);
+            log.info("Order has been saved successfully");
+        }
     }
 
     @Override
@@ -56,5 +59,15 @@ public class OrderServiceImpl implements OrderService {
 
     public List<Order> findAllByCar_id(int id) {
         return orderRepository.findAllByCar_Id(id);
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public void deleteOrderById(int id) {
+        orderRepository.deleteById(id);
     }
 }

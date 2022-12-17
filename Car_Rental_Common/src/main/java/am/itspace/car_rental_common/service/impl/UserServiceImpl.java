@@ -6,8 +6,10 @@ import am.itspace.car_rental_common.entity.UserImage;
 import am.itspace.car_rental_common.exception.DuplicateEmailException;
 import am.itspace.car_rental_common.repository.ImageRepository;
 import am.itspace.car_rental_common.repository.UserRepository;
+import am.itspace.car_rental_common.service.MailService;
 import am.itspace.car_rental_common.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,64 +32,80 @@ public class UserServiceImpl implements UserService {
     private final MailService mailService;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ImageRepository imageRepository;
+
     @Value("${car.rental.user.images.folder}")
     private String folderPath;
 
-    public void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files) {
+
+    public void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files) throws DuplicateEmailException {
 
         try {
-            checkEmail(user);
-            user.setRole(Role.CLIENT);
-            user.setEnabled(false);
-            user.setVerifyToken(UUID.randomUUID().toString());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            saveUsersImage(user, (files));
-            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
-                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
-        } catch (DuplicateEmailException e) {
-            throw new RuntimeException(e.getMessage());
+            if (checkEmail(user)) {
+
+                user.setRole(Role.CLIENT);
+                user.setEnabled(false);
+                user.setVerifyToken(UUID.randomUUID().toString());
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setTokenGivenDate(LocalDate.now());
+                userRepository.save(user);
+
+                String picUrl = user.getPicUrl();
+                saveUsersImage(user, (files));
+                mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " + "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
+            }
+        } catch (RuntimeException e) {
+            throw new DuplicateEmailException(e.getMessage());
         }
     }
 
+    @Override
+    public User saveUserAsDriverRest(User user) {
+        user.setRole(Role.DRIVER);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
 
-    public void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files) {
+    @Override
+    public User saveUserAsDealerRest(User user) {
+        user.setRole(Role.DEALER);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
+    }
+
+
+    public void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files) throws DuplicateEmailException {
         try {
-            checkEmail(user);
-            user.setRole(Role.DRIVER);
-            user.setEnabled(false);
-            user.setVerifyToken(UUID.randomUUID().toString());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            saveUsersImage(user, files);
-            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
-                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
-        } catch (DuplicateEmailException e) {
-            throw new RuntimeException(e.getMessage());
+            if (checkEmail(user)) {
+                user.setRole(Role.DRIVER);
+                user.setEnabled(false);
+                user.setVerifyToken(UUID.randomUUID().toString());
+                user.setTokenGivenDate(LocalDate.now());
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
+                userRepository.save(user);
+                saveUsersImage(user, files);
+                mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " + "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
+            }
+        } catch (RuntimeException e) {
+            throw new DuplicateEmailException(e.getMessage());
         }
     }
 
     public void saveUserAsDealer(@ModelAttribute User user, MultipartFile[] files) {
-        try {
-            checkEmail(user);
-            user.setRole(Role.DEALER);
-            user.setEnabled(false);
-            user.setVerifyToken(UUID.randomUUID().toString());
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(user);
-            saveUsersImage(user, files);
-            mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " +
-                    "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
-        } catch (DuplicateEmailException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        checkEmail(user);
+        user.setRole(Role.DEALER);
+        user.setEnabled(false);
+        user.setVerifyToken(UUID.randomUUID().toString());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setTokenGivenDate(LocalDate.now());
+        userRepository.save(user);
+        saveUsersImage(user, files);
+        mailService.sendEmail(user.getEmail(), "Verify your account", "Hello " + user.getName() + " " + user.getSurname() + ".\nVerify your account by clicking on this link " + "<a href=\"http://localhost:8080/users/verify?email=" + user.getEmail() + "&token=" + user.getVerifyToken() + "\">Activate</a>");
     }
 
-    public void checkEmail(User user) throws DuplicateEmailException {
-        if (userRepository.findUserByEmail(user.getEmail()).isPresent()) {
-            throw new DuplicateEmailException("User with this email already exists");
-        }
+    public boolean checkEmail(User user) {
+        return userRepository.findUserByEmail(user.getEmail()).isEmpty();
     }
+
 
     public void saveUsersImage(User user, MultipartFile[] files) {
         try {
@@ -94,10 +115,7 @@ public class UserServiceImpl implements UserService {
                     File newFile = new File(folderPath + File.separator + fileName);
                     file.transferTo(newFile);
                     user.setPicUrl(fileName);
-                    UserImage userImage = UserImage.builder()
-                            .user(user)
-                            .picUrl(fileName)
-                            .build();
+                    UserImage userImage = UserImage.builder().user(user).picUrl(fileName).build();
                     imageRepository.save(userImage);
                 } else {
                     user.setPicUrl("C:\\Users\\Edgar\\Desktop\\user_images");
@@ -141,8 +159,20 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id);
     }
 
-    public void saveChanges(User user) {
-
+    public User update(User user) {
         userRepository.save(user);
+        return user;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User saveUserAsClientRest(User user) {
+        user.setRole(Role.CLIENT);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return userRepository.save(user);
     }
 }

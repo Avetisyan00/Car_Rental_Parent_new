@@ -24,6 +24,7 @@ public class UserDetailController {
     private final UserService userService;
     private final UserImageService userImageService;
     private final UserInfoService userDetailService;
+
     @GetMapping("/user/details/{id}")
     public String showUserDetails(@PathVariable("id") int id, ModelMap modelMap) {
         Optional<User> user = userService.findById(id);
