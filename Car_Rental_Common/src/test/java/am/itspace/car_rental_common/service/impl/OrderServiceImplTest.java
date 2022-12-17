@@ -138,7 +138,7 @@ public class OrderServiceImplTest {
         );
         when(orderRepository.findAllByCar_Id(anyInt())).thenReturn(orders);
         for (Order order : orders) {
-            orderService.findAllByCar_id(order.getCar().getId());
+            orderService.findAllByCarId(order.getCar().getId());
         }
         verify(orderRepository,times(2)).findAllByCar_Id(anyInt());
     }
