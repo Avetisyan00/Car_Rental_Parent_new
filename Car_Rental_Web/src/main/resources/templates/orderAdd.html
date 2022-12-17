@@ -5,6 +5,9 @@
     <title>Title</title>
 </head>
 <body>
+<th:block>
+  <span style="color: red" th:if="${error != null}" th:text="WRONG DATES"></span>
+</th:block>
 <form action="/order/add" method="post">
   <label>
     <input type="date" name="orderStart">

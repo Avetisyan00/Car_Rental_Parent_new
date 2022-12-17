@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+
 @Repository
-public interface CarDetailRepository extends JpaRepository<Image,Integer> {
+public interface CarDetailRepository extends JpaRepository<Image, Integer> {
 
     List<Image> findAllByCar_Id(int id);
+
     Optional<Image> deleteByCar_Id(int carId);
 }

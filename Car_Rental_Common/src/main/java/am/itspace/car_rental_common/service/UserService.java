@@ -10,13 +10,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-    void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files);
+    void saveUserAsClient(@ModelAttribute User user, MultipartFile[] files) throws DuplicateEmailException;
 
-    void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files);
+    User saveUserAsDriverRest(User user);
+
+    User saveUserAsDealerRest(User user);
+
+    void saveUserAsDriver(@ModelAttribute User user, MultipartFile[] files) throws DuplicateEmailException;
 
     void saveUserAsDealer(@ModelAttribute User user, MultipartFile[] files);
 
-    void checkEmail(User user) throws DuplicateEmailException;
+    boolean checkEmail(User user) throws DuplicateEmailException;
 
     void saveUsersImage(User user, MultipartFile[] file);
 
@@ -28,5 +32,9 @@ public interface UserService {
 
     Optional<User> findById(int id);
 
-    void saveChanges(User user);
+    User update(User user);
+
+    List<User> findAll();
+
+    User saveUserAsClientRest(User user);
 }

@@ -59,7 +59,7 @@ public class AdminController {
         Optional<User> byId = userService.findById(id);
         user.setEnabled(true);
         byId.ifPresent(value -> user.setRole(value.getRole()));
-        userService.saveChanges(user);
+        userService.update(user);
         return "redirect:/admin";
     }
 }
