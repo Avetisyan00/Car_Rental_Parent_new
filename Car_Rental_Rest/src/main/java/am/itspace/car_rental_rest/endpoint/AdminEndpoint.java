@@ -14,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminEndpoint {
     private final UserService userService;
     private final UserMapper userMapper;
@@ -34,6 +35,7 @@ public class AdminEndpoint {
     public ResponseEntity<List<User>> listOfDealers() {
         return ResponseEntity.ok(userService.findAllByRole(Role.DEALER));
     }
+
     /**
      * get list of clients
      */

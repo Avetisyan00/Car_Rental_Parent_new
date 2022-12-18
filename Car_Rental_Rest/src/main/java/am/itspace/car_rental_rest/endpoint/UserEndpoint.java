@@ -61,7 +61,7 @@ public class UserEndpoint {
     /**
      * Upload of images of user
      */
-    @PostMapping("/client/upload/{id}")
+    @PostMapping("/user/upload/{id}")
     public ResponseEntity<User> addUserImage(@RequestParam("pictures") MultipartFile[] files,
                                              @PathVariable("id") int id) {
         Optional<User> byId = userService.findById(id);
