@@ -1,5 +1,6 @@
 package am.itspace.car_rental_rest.security.config;
 
+import am.itspace.car_rental_common.entity.Role;
 import am.itspace.car_rental_rest.security.JWTAuthenticationTokenFilter;
 import am.itspace.car_rental_rest.security.JwtAuthenticationEntryPoint;
 import am.itspace.car_rental_rest.service.impl.CurrentUserDetailServiceImpl;
@@ -35,7 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/user/auth").permitAll()
-                .anyRequest().permitAll();
+                .antMatchers("/registration/**").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Role.ADMIN.toString())
+                .antMatchers("/cars/add").hasAuthority(Role.DEALER.toString())
+                .anyRequest().authenticated();
 
         http.addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
 
@@ -50,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public JWTAuthenticationTokenFilter authenticationTokenFilterBean() throws Exception {
+    public JWTAuthenticationTokenFilter authenticationTokenFilterBean() {
         return new JWTAuthenticationTokenFilter();
     }
 
