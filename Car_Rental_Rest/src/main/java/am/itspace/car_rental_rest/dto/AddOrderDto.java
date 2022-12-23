@@ -20,9 +20,9 @@ import java.time.LocalDate;
 
 public class AddOrderDto {
 
-    @NotEmpty(message = "orderStart can't be null or empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate orderStart;
-    @NotEmpty(message = "orderEnd can't be null or empty")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate orderEnd;
 
     private User driver;

@@ -39,7 +39,12 @@ public class OrderEndpoint {
             }
         }
         Order order = orderMapper.order(addOrderDto);
-        double amount = order.getCar().getPricePerDay() + order.getDriver().getPricePerDay();
+        double amount;
+        if (addOrderDto.getDriver() != null){
+            amount = addOrderDto.getCar().getPricePerDay() + addOrderDto.getDriver().getPricePerDay();
+        }else {
+            amount = addOrderDto.getCar().getPricePerDay();
+        }
         orderService.save(addOrderDto.getCar(), addOrderDto.getDriver(), addOrderDto.getDealer(),
                 currentUser.getUser().getId(), addOrderDto.getOrderStart(), addOrderDto.getOrderEnd(), amount);
         return ResponseEntity.status(HttpStatus.CREATED).body(orderMapper.order(order));

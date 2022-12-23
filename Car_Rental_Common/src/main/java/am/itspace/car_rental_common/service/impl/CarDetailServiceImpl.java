@@ -32,6 +32,10 @@ public class CarDetailServiceImpl implements CarDetailService {
     @Value("${car.rental.images.folder}")
     private String folderPath;
 
+    /**
+     * This method saves car images.
+     * we send images of car, and set car
+     */
     public void save(int carId, MultipartFile[] files) {
         int index = 0;
         Optional<Car> byId = carRepository.findById(carId);

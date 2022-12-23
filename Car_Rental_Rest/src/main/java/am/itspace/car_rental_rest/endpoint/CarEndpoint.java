@@ -114,8 +114,10 @@ public class CarEndpoint {
                                        @AuthenticationPrincipal CurrentUser currentUser) throws EntityNotFoundException {
         log.info("/cars/edit has been called");
         Optional<Car> byId = carService.findById(id);
-        if (currentUser.getUser().getId() == byId.get().getDealer().getId()) {
-            carService.deleteById(id);
+        if (byId.isPresent()) {
+            if (currentUser.getUser().getId() == byId.get().getDealer().getId()) {
+                carService.deleteById(id);
+            }
         }
         return ResponseEntity.noContent().build();
     }
