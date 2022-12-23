@@ -70,7 +70,7 @@ public class CarServiceImpl implements CarService {
 
     /**
      * This method saves the car.
-     * we send all image of car, and set dealer
+     * we send image of car, and set dealer
      */
     public void saveCar(Car car, MultipartFile file, int dealerId) {
         if (car == null) {

@@ -22,7 +22,11 @@ public class CustomCarRepo {
     private EntityManager entityManager;
 
     public final CarRepository carRepository;
-
+    /**
+     * This method get all cars.
+     * The method allows to search car
+     * by name,model...
+     */
     public List<Car> cars(CarFilterDto carSearchDto) {
         QCar qCar = QCar.car;
         var query = new JPAQuery(entityManager);

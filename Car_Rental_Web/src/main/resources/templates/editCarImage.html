@@ -7,8 +7,9 @@
 <body>
 <form action="/cars-detail/update" method="post" enctype="multipart/form-data">
   <input type="hidden" name="id" th:value="${image.id}">
-  <input type="hidden" name="carId" th:value="${image.car.id}">
+  <input type="hidden" name="car" th:value="${image.car.id}">
   <input type="file" name = "carImage" th:value="${image.picUrl}">
+  <input type="submit" value="change car image">
 
 </form>
 </body>

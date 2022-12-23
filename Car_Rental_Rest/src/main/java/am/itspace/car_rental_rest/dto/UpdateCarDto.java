@@ -21,7 +21,7 @@ public class UpdateCarDto {
     private String model;
     @NotEmpty(message = "name can't be null or empty")
     private String name;
-    @NotNull(message = "model can't be null")
+    @NotNull(message = "transmission can't be null")
     private Transmission transmission;
 
     @NotNull(message = "driveUnit can't be null")
@@ -34,9 +34,9 @@ public class UpdateCarDto {
     private FuelType fuelType;
     @NotEmpty(message = "color can't be null or empty")
     private String color;
-    @NotEmpty(message = "production year can't be null or empty")
+    @Range(min = 1990)
     private int productionYear;
-    @NotEmpty(message = "picture year can't be null or empty")
+
     private String picUrl;
     @Range(min = 0)
     private double pricePerDay;

@@ -30,10 +30,6 @@ public class CarDetailController {
 
     private final OrderService orderService;
 
-    @GetMapping("/car-detail/add")
-    public String carDetailAddPage() {
-        return "car-detail";
-    }
 
     /**
      * Upload Car images
@@ -82,6 +78,7 @@ public class CarDetailController {
         }
         return "redirect:/cars";
     }
+
     /**
      * Update car image by id
      */
@@ -91,6 +88,7 @@ public class CarDetailController {
         carDetailService.updateCarImage(file, image);
         return "redirect:/cars-detail?id=" + image.getCar().getId();
     }
+
     /**
      * Delete car image by id
      */
